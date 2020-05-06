@@ -22,6 +22,10 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.isFound = false;
+    if (this.dataExchangeService.UserName.getValue().length != 0) {
+      this.userName = this.dataExchangeService.UserName.getValue();
+      this.findUsers();
+    }
   }
 
   findUsers() {

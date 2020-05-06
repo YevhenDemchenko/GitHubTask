@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {BehaviorSubject, Observable} from "rxjs";
+import {ReposModel} from "../models/Repos.model";
+import {FollowerModel} from "../models/Follower.model";
 
 @Injectable({
   providedIn: 'root'
@@ -30,7 +32,11 @@ export class HttpService {
     return this.http.get(this.URL_USER + userName + '?client_id=' + this.clientId + '&client_secret=' + this.clientSecret, this.httpOptions);
   }
 
-  getUsersList(): Observable<any> {
-    return this.subscribeUsersSearchEvent;
+  getFollowers(urlFollowers: string) {
+    return this.http.get<FollowerModel[]>(urlFollowers+ '?client_id=' + this.clientId + '&client_secret=' + this.clientSecret, this.httpOptions);
+  }
+
+  getRepos(urlRepos: string) {
+    return this.http.get<ReposModel[]>(urlRepos+ '?client_id=' + this.clientId + '&client_secret=' + this.clientSecret, this.httpOptions);
   }
 }

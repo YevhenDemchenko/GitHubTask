@@ -1,8 +1,8 @@
 <form #editForm="ngForm" >
-  <mat-form-field appearance="outline" >
-    <mat-label>Enter your name</mat-label>
+  <mat-form-field appearance="outline" style="width: 20em" >
+    <mat-label>Введіть логін користувача</mat-label>
     <input type="text" required matInput
-           [(ngModel)]="userName" name="name" placeholder="Enter your name"/>
+           [(ngModel)]="userName" name="name" placeholder="Введіть логін користувача"/>
   </mat-form-field>&nbsp;&nbsp;
   <button mat-stroked-button color="primary" [disabled]="!editForm.valid" (click)="findUsers()">Знайти</button>
 </form>

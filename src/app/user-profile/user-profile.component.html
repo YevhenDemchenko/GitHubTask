@@ -1,20 +1,54 @@
-<div *ngIf="isLoad">
-  <mat-card class="card">
+<button mat-stroked-button color="accent" (click)="goToSearchPage()">На попередню сторінку</button>
+<div *ngIf="isLoad" class="rootProfile">
+  <mat-card class="card userInfo">
     <mat-card-header>
       <img mat-card-avatar [src]="user.avatar_url" alt="avatar" style="background-size: cover;">
       <mat-card-title>{{user.login}}</mat-card-title>
-      <mat-card-subtitle>{{user.created_at}}</mat-card-subtitle>
+      <mat-card-subtitle>{{user.created_at | date: 'dd.MM.yyyy': 'Europe/Kiev'}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
       <span class="profileInfo"><span class="titleInfo">Локація: </span><span>{{user.location == null ? 'невідомо' : user.location}}</span></span><br>
       <span class="profileInfo"><span class="titleInfo">Репозиторіїв: </span><span>{{user.public_repos}}</span></span><br>
       <span class="profileInfo"><span class="titleInfo">Підписників: </span><span>{{user.followers}}</span></span><br>
       <span class="profileInfo"><span class="titleInfo">Підписок: </span><span>{{user.following}}</span></span><br>
-      <span class="profileInfo"><span class="titleInfo">Про себе: </span><span>{{user.blog == '' ? 'Ще нічого не написано' : user.blog}}</span></span>
+      <span class="profileInfo"><span class="titleInfo">Про себе: </span><span>{{user.blog == '' ? 'Пусто' : user.blog}}</span></span>
     </mat-card-content>
     <mat-card-actions>
      <button mat-stroked-button color="primary" (click)="editProfile()">Редагувати</button>
     </mat-card-actions>
+  </mat-card>
+
+  <mat-card class="card">
+    <mat-card-header>
+      <mat-card-title>5 перших підписників</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div style="display: flex; justify-content: space-between;">
+        <div *ngFor="let follower of followersArray"
+             style=" display: flex; flex-direction: column; justify-content: center; margin: 1em;">
+          <img [src]="follower.avatar_url" alt="follower" mat-card-avatar class="followerImage">
+          <p>{{follower.login}}</p>
+        </div>
+        <span *ngIf="followersArray.length == 0">В користувача ще немає підписників</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="card">
+    <mat-card-header>
+      <mat-card-title>5 перших репозиторіїв</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div *ngFor="let repo of reposArray" style="margin: 0.5em">
+        <span class="profileInfo"><span class="titleInfo">Назва: </span><span>{{repo.name}}</span></span><br>
+        <span class="profileInfo"><span class="titleInfo">Основна мова: </span><span>{{repo.language}}</span></span><br>
+        <span class="profileInfo"><span class="titleInfo">Опис: </span>
+          <span>{{repo.description}}</span>
+        </span><br>
+        <mat-divider></mat-divider>
+      </div>
+      <span *ngIf="reposArray.length == 0">В користувача ще немає репозиторіїв</span>
+    </mat-card-content>
   </mat-card>
 </div>
 <mat-spinner *ngIf="!isLoad"></mat-spinner>
