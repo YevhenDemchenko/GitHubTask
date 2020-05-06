@@ -1,0 +1,12 @@
+.cardDiv {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.card {
+  max-width: 300px;
+  margin: 0.5em;
+  min-width: 17em;
+  min-height: 7em;
+}
+

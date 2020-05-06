@@ -1,1 +1,20 @@
-<p>user-profile works!</p>
+<div *ngIf="isLoad">
+  <mat-card class="card">
+    <mat-card-header>
+      <img mat-card-avatar [src]="user.avatar_url" alt="avatar" style="background-size: cover;">
+      <mat-card-title>{{user.login}}</mat-card-title>
+      <mat-card-subtitle>{{user.created_at}}</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <span class="profileInfo"><span class="titleInfo">Локація: </span><span>{{user.location == null ? 'невідомо' : user.location}}</span></span><br>
+      <span class="profileInfo"><span class="titleInfo">Репозиторіїв: </span><span>{{user.public_repos}}</span></span><br>
+      <span class="profileInfo"><span class="titleInfo">Підписників: </span><span>{{user.followers}}</span></span><br>
+      <span class="profileInfo"><span class="titleInfo">Підписок: </span><span>{{user.following}}</span></span><br>
+      <span class="profileInfo"><span class="titleInfo">Про себе: </span><span>{{user.blog == '' ? 'Ще нічого не написано' : user.blog}}</span></span>
+    </mat-card-content>
+    <mat-card-actions>
+     <button mat-stroked-button color="primary" (click)="editProfile()">Редагувати</button>
+    </mat-card-actions>
+  </mat-card>
+</div>
+<mat-spinner *ngIf="!isLoad"></mat-spinner>
