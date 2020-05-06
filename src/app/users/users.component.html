@@ -5,6 +5,20 @@
            [(ngModel)]="userName" name="name" placeholder="Введіть логін користувача"/>
   </mat-form-field>&nbsp;&nbsp;
   <button mat-stroked-button color="primary" [disabled]="!editForm.valid" (click)="findUsers()">Знайти</button>
+
+  <mat-form-field *ngIf="isFound" class="form" floatLabel="never" appearance="outline">
+    <mat-label>Локація</mat-label>
+    <input type="text" placeholder="Локація" matInput [formControl]="myControlLocation" [matAutocomplete]="autoAzs"
+           [(ngModel)]="locationInput">
+    <mat-autocomplete #autoAzs="matAutocomplete">
+      <mat-option *ngFor="let option of filteredOptionsLocation | async" [value]="option">
+        {{option}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  <button *ngIf="isFound" mat-stroked-button color="primary" (click)="applyFilters()">Фільтрувати</button>
+  <button *ngIf="isFound" mat-stroked-button color="primary" (click)="resetFilters()">Очистити фільтри</button>
+
 </form>
 <div *ngIf="isFound" class="cardDiv">
   <mat-card *ngFor="let user of usersInfoArray" class="card" (click)="showUserProfile(user.login)">
