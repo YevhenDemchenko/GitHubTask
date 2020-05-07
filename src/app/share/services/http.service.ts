@@ -21,15 +21,17 @@ export class HttpService {
   private clientId = '239cd457ca10c9a3c1e2';
   private clientSecret = '40586d719b1ae917b02df7df06ba98b3d39951ef';
 
-  subscribeUsersSearchEvent = new BehaviorSubject([]);
-  subscribeUserEvent = new BehaviorSubject([]);
 
-  getUsers(userName: string) {
-    return this.http.get(this.URL_USERS + userName+ '&client_id=' + this.clientId + '&client_secret=' + this.clientSecret, this.httpOptions);
+  getUsers(userName: string, location: string, language: string) {
+    let locationSt = location.length!= 0 ? '+location:' : '';
+    let languageSt = language.length!= 0? '+language:' : '';
+    return this.http.get(`${this.URL_USERS}${userName}${locationSt}${location}${languageSt}${language}
+      &client_id=${this.clientId}&client_secret=${this.clientSecret}&type=Users`, this.httpOptions);
   }
 
   getUser(userName: string) {
-    return this.http.get(this.URL_USER + userName + '?client_id=' + this.clientId + '&client_secret=' + this.clientSecret, this.httpOptions);
+    return this.http.get(this.URL_USER + userName + '?client_id=' + this.clientId + '&client_secret=' + this.clientSecret +
+      '&type=Users', this.httpOptions);
   }
 
   getFollowers(urlFollowers: string) {

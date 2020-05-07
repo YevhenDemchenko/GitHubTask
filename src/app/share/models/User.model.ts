@@ -1,10 +1,10 @@
 export class UserModel {
   constructor(props?: Partial<UserModel>) {
     if (props) {
-      this.id = props.id;
+      this.location = props.location || '';
       this.login = props.login || '';
+      this.blog = props.blog || '';
       this.avatar_url = props.avatar_url || '';
-      this.repos_url = props.repos_url || '';
     } else {
       props.default();
     }
@@ -36,9 +36,9 @@ export class UserModel {
   url: string;
 
   default() {
-    this.id = 0;
+    this.location = '';
     this.login = '';
+    this.blog = '';
     this.avatar_url = '';
-    this.repos_url = '';
   }
 }

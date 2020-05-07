@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {HttpService} from "../share/services/http.service";
 import {Router} from "@angular/router";
 import {DataExchangeService} from "../share/services/data-exchange.service";
@@ -17,23 +17,37 @@ export class UserProfileComponent implements OnInit {
               private dataExchangeService: DataExchangeService) { }
 
   user: UserModel;
+  editedUser: UserModel;
   followersArray: Array<FollowerModel> = new Array<FollowerModel>();
   reposArray: Array<ReposModel> = new Array<ReposModel>();
   userName: string;
   isLoad: boolean;
   isShowMore = false;
+  isEditing: boolean;
+
+  @ViewChild('readOnlyTemplate', {static: false}) readOnlyTemplate: TemplateRef<any>;
+  @ViewChild('editTemplate', {static: false}) editTemplate: TemplateRef<any>;
 
   ngOnInit(): void {
     this.isLoad = false;
     this.followersArray = new Array<any>();
     this.reposArray = new Array<ReposModel>();
-    this.userName = this.dataExchangeService.UserName.getValue();
+    //this.userName = this.dataExchangeService.UserName.getValue();
+    this.userName = 'YevhenDemchenko';
     if (this.userName.length === 0) {
       this.router.navigate(["users"]);
     } else {
       this.loadUser();
     }
 
+
+  }
+  loadTemplate() {
+    if (this.isEditing) {
+      return this.editTemplate;
+    } else {
+      return this.readOnlyTemplate;
+    }
   }
 
   loadUser() {
@@ -48,6 +62,7 @@ export class UserProfileComponent implements OnInit {
       complete: () => {
         this.loadFollowers();
         this.loadRepos();
+        this.isEditing = false;
         this.isLoad = true;
       }
     });
@@ -89,6 +104,16 @@ export class UserProfileComponent implements OnInit {
   }
 
   editProfile() {
+    this.editedUser = new UserModel({location: this.user.location, login: this.user.login, blog: this.user.blog,
+      avatar_url: this.user.avatar_url})
+    this.isEditing = !this.isEditing;
+  }
+
+  saveEditedUser() {
+
+  }
+
+  cancelSavingUser() {
 
   }
 
