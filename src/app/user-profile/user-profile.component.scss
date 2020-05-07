@@ -1,6 +1,10 @@
 .rootProfile {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
+}
+.firstBlock {
+  display: block;
 }
 .card {
   max-width: 700px;
@@ -22,6 +26,10 @@
   margin-right: auto;
   margin-bottom: 10px;
 }
+.divFollowers {
+  display: flex;
+  justify-content: space-between;
+}
 
 .cardRepo {
   width: 48%;
@@ -32,10 +40,30 @@
 mat-form-field {
   margin-left: 1em;
 }
+.formField {
+  width: 20em;
+}
 .spinner {
   position: absolute;
   top: calc(50% - 50px);
   left: calc(50% - 50px);
   margin-right: -50%;
   transform: translate(-50%, -50%)
+}
+.aboutSpan {
+  display: table-caption;
+  width: 18em;
+}
+
+@media screen and (max-width: 600px) {
+  .firstBlock {
+    display: contents;
+  }
+  .cardRepo {
+    width: 100%;
+    margin-bottom: 1.5em;
+  }
+  .divFollowers {
+    flex-wrap: wrap;
+  }
 }

@@ -1,3 +1,6 @@
+.formSearch {
+  display: -webkit-box;
+}
 .cardDiv {
   display: flex;
   justify-content: space-evenly;
@@ -18,4 +21,19 @@ mat-form-field {
   left: calc(50% - 50px);
   margin-right: -50%;
   transform: translate(-50%, -50%)
+}
+::ng-deep.mat-paginator .mat-paginator-page-size {
+  display: none;
+}
+
+@media screen and (max-width: 600px) {
+  .formSearch {
+    display: inline-block;
+  }
+  mat-form-field {
+    width: 11em;
+  }
+  .card:last-child {
+    margin-bottom: 1.5em;
+  }
 }

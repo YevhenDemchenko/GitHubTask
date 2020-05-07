@@ -46,6 +46,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   findUsers(page:number) {
     this.isSearching = true;
     this.noResults = '';
+
     sessionStorage.setItem('searchProps', JSON.stringify({login: this.userName,
       location: this.locationInput, language: this.languageInput}));
 
@@ -57,7 +58,6 @@ export class UsersComponent implements OnInit, OnDestroy {
         next: (response: any) => {
           this.usersArray = response.items;
           this.lengthPagination = response.total_count;
-          console.log(response);
         },
         error: error => {
           console.error('There was an error!', error);
@@ -71,7 +71,6 @@ export class UsersComponent implements OnInit, OnDestroy {
 
           this.getUsersInfoSubscriptions = forkJoin(observeArr).subscribe({
             next: (response: any) => {
-              console.log(response);
               this.usersInfoArray = response;
             },
             error: error => {

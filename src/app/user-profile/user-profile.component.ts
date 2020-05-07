@@ -19,8 +19,10 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   user: UserModel;
   editedUser: UserModel;
+
   followersArray: Array<FollowerModel> = new Array<FollowerModel>();
   reposArray: Array<ReposModel> = new Array<ReposModel>();
+
   userName: string;
   isLoad: boolean;
   isEditing: boolean;
@@ -34,13 +36,11 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     return confirm(value);
   }
 
-
   ngOnInit(): void {
     this.isLoad = false;
     this.followersArray = new Array<any>();
     this.reposArray = new Array<ReposModel>();
     this.userName = this.dataExchangeService.UserName.getValue();
-    //this.userName = 'YevhenDemchenko';
     if (this.userName.length === 0) {
       this.router.navigate(["users"]);
     } else {
@@ -52,7 +52,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.getUserSubscriptions = this.httpService.getUser(this.userName).subscribe({
       next: (response: any) => {
         this.user = response;
-        console.log(response);
       },
       error: error => {
         console.error('There was an error!', error);
@@ -70,10 +69,10 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.getFollowersSubscriptions =this.httpService.getFollowers(this.user.followers_url).subscribe({
       next: (response: FollowerModel[]) => {
         response.length >=5 ? response.splice(4, response.length - 5) : response;
+
         for (const e of response) {
           this.followersArray.push(new FollowerModel({login: e.login, avatar_url: e.avatar_url}));
         }
-        console.log(response);
       },
       error: error => {
         console.error('There was an error!', error);
@@ -101,23 +100,33 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   editProfile() {
-    this.editedUser = new UserModel({location: this.user.location, login: this.user.login, blog: this.user.blog,
-      avatar_url: this.user.avatar_url})
+    this.editedUser = new UserModel({location: this.user.location, login: this.user.login, blog: this.user.blog})
     this.isEditing = !this.isEditing;
   }
 
   saveEditedUser() {
-    const warn = UserProfileComponent.warningMassage('Ви впевнені, що хочете зберегти зміни?');
-    if(warn) {
+    if (this.editedUser.location != this.user.location || this.editedUser.login != this.user.login ||
+      this.editedUser.blog != this.user.blog) {
+      const warn = UserProfileComponent.warningMassage('Ви впевнені, що хочете зберегти зміни?');
+      if(warn) {
+        this.isEditing = !this.isEditing;
+      }
+    } else {
       this.isEditing = !this.isEditing;
     }
   }
 
   cancelSavingUser() {
-    const warn = UserProfileComponent.warningMassage('Ви впевнені, що хочете відмінити редагування?');
-    if(warn) {
+    if (this.editedUser.location != this.user.location || this.editedUser.login != this.user.login ||
+      this.editedUser.blog != this.user.blog) {
+      const warn = UserProfileComponent.warningMassage('Ви впевнені, що хочете відмінити редагування?');
+      if(warn) {
+        this.isEditing = !this.isEditing;
+      }
+    } else {
       this.isEditing = !this.isEditing;
     }
+
   }
 
   ngOnDestroy(): void {
