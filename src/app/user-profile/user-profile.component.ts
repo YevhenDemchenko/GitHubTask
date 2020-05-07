@@ -1,4 +1,4 @@
-import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {HttpService} from "../share/services/http.service";
 import {Router} from "@angular/router";
 import {DataExchangeService} from "../share/services/data-exchange.service";
@@ -22,11 +22,7 @@ export class UserProfileComponent implements OnInit {
   reposArray: Array<ReposModel> = new Array<ReposModel>();
   userName: string;
   isLoad: boolean;
-  isShowMore = false;
   isEditing: boolean;
-
-  @ViewChild('readOnlyTemplate', {static: false}) readOnlyTemplate: TemplateRef<any>;
-  @ViewChild('editTemplate', {static: false}) editTemplate: TemplateRef<any>;
 
   ngOnInit(): void {
     this.isLoad = false;
@@ -42,13 +38,7 @@ export class UserProfileComponent implements OnInit {
 
 
   }
-  loadTemplate() {
-    if (this.isEditing) {
-      return this.editTemplate;
-    } else {
-      return this.readOnlyTemplate;
-    }
-  }
+
 
   loadUser() {
     this.httpService.getUser(this.userName).subscribe({

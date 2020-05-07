@@ -1,5 +1,5 @@
 <form #editForm="ngForm" >
-  <mat-form-field appearance="outline" style="width: 20em" >
+  <mat-form-field appearance="outline" style="width: 15em" >
     <mat-label>Введіть логін користувача</mat-label>
     <input type="text"  matInput
            [(ngModel)]="userName" name="name" placeholder="Введіть логін користувача"/>
@@ -7,11 +7,11 @@
   <mat-form-field class="form" floatLabel="never" appearance="outline">
     <mat-label>Локація</mat-label>
     <input type="text" placeholder="Локація" matInput [(ngModel)]="locationInput" name="location">
-  </mat-form-field>
+  </mat-form-field>&nbsp;&nbsp;
   <mat-form-field  class="form" floatLabel="never" appearance="outline">
     <mat-label>Мова програмування</mat-label>
     <input type="text" placeholder="Мова програмування" matInput name="language" [(ngModel)]="languageInput">
-  </mat-form-field>
+  </mat-form-field>&nbsp;&nbsp;
   <button mat-stroked-button color="primary" [disabled]="!editForm.valid" (click)="findUsers()">Знайти</button>
 
 </form>

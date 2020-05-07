@@ -28,15 +28,21 @@ export class UsersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.isFound = false;
-    if (this.dataExchangeService.UserName.getValue().length != 0) {
-      this.userName = this.dataExchangeService.UserName.getValue();
-      this.findUsers();
+    let localProps = JSON.parse(sessionStorage.getItem('searchProps'));
+    if (localProps != undefined && localProps.length != 0) {
+      this.userName = localProps.login;
+      this.locationInput = localProps.location;
+      this.languageInput = localProps.language;
     }
   }
 
   findUsers() {
+    sessionStorage.setItem('searchProps', JSON.stringify({login: this.userName,
+      location: this.locationInput, language: this.languageInput}));
+
     this.usersArray = new Array<UserModel>();
     this.usersInfoArray = new Array<UserModel>();
+
     this.getUsersSubscriptions = this.httpService.getUsers(this.userName, this.locationInput, this.languageInput)
       .subscribe({
       next: (response: any) => {
