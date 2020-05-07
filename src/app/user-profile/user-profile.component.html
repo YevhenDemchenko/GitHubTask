@@ -1,69 +1,65 @@
 <button mat-stroked-button color="accent" (click)="goToSearchPage()">На попередню сторінку</button>
 <div *ngIf="isLoad" class="rootProfile">
-  <mat-card class="card userInfo">
-    <mat-card-header>
-      <img mat-card-avatar [src]="user.avatar_url" alt="avatar" style="background-size: cover;">
-      <mat-card-title>{{user.login}}</mat-card-title>
-      <mat-card-subtitle>{{user.created_at | date: 'dd.MM.yyyy': 'Europe/Kiev'}}</mat-card-subtitle>
-    </mat-card-header>
-    <mat-card-content>
-      <div *ngIf="!isEditing">
-        <span class="profileInfo"><span class="titleInfo">Локація: </span><span>{{user.location == null ? 'невідомо' : user.location}}</span></span><br>
-        <span class="profileInfo"><span class="titleInfo">Репозиторіїв: </span><span>{{user.public_repos}}</span></span><br>
-        <span class="profileInfo"><span class="titleInfo">Підписників: </span><span>{{user.followers}}</span></span><br>
-        <span class="profileInfo"><span class="titleInfo">Підписок: </span><span>{{user.following}}</span></span><br>
-        <span class="profileInfo"><span class="titleInfo">Про себе: </span><span>{{user.blog == '' ? 'Пусто' : user.blog}}</span></span>
-        <button mat-stroked-button color="primary" (click)="editProfile()">Редагувати</button>
-      </div>
-      <div *ngIf="isEditing">
-        <form #editForm="ngForm" >
-          <mat-form-field appearance="outline" style="width: 20em" >
-            <mat-label>Ім'я користувача</mat-label>
-            <input type="text"  matInput
-                   [(ngModel)]="editedUser.login" name="login" placeholder="Ім'я користувача"/>
-          </mat-form-field><br>
-          <mat-form-field appearance="outline" style="width: 20em" >
-            <mat-label>Локація</mat-label>
-            <input type="text"  matInput
-                   [(ngModel)]="editedUser.location" name="location" placeholder="Локація"/>
-          </mat-form-field><br>
-          <mat-form-field appearance="outline" style="width: 20em" >
-            <mat-label>Про себе</mat-label>
-            <input type="text"  matInput
-                   [(ngModel)]="editedUser.blog" name="blog" placeholder="Про себе"/>
-          </mat-form-field><br>
-          <mat-form-field appearance="outline" style="width: 20em" >
-            <mat-label>Посилання на аватар</mat-label>
-            <input type="text"  matInput
-                   [(ngModel)]="editedUser.avatar_url" name="avatar_url" placeholder="Посилання на аватар"/>
-          </mat-form-field><br>
-          <button mat-flat-button color="primary" (click)="saveEditedUser()">Зберегти</button>
-          <button mat-flat-button color="warn" (click)="cancelSavingUser()">Відмінити</button>
-        </form>
-      </div>
-    </mat-card-content>
-   <!-- <mat-card-actions>
-     <button mat-stroked-button color="primary" (click)="editProfile()">Редагувати</button>
-    </mat-card-actions>-->
-  </mat-card>
-
-  <mat-card class="card">
-    <mat-card-header>
-      <mat-card-title>5 перших підписників</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-      <div style="display: flex; justify-content: space-between;">
-        <div *ngFor="let follower of followersArray"
-             style=" display: flex; flex-direction: column; justify-content: center; margin: 1em;">
-          <img [src]="follower.avatar_url" alt="follower" mat-card-avatar class="followerImage">
-          <p>{{follower.login}}</p>
+  <div style="display: block">
+    <mat-card class="card">
+      <mat-card-header>
+        <img mat-card-avatar [src]="user.avatar_url" alt="avatar" style="background-size: cover;">
+        <mat-card-title>{{user.login}}</mat-card-title>
+        <mat-card-subtitle>{{user.created_at | date: 'dd.MM.yyyy': 'Europe/Kiev'}}</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <div *ngIf="!isEditing">
+          <span class="profileInfo"><span class="titleInfo">Локація: </span><span>{{user.location == null ? 'невідомо' : user.location}}</span></span><br>
+          <span class="profileInfo"><span class="titleInfo">Репозиторіїв: </span><span>{{user.public_repos}}</span></span><br>
+          <span class="profileInfo"><span class="titleInfo">Підписників: </span><span>{{user.followers}}</span></span><br>
+          <span class="profileInfo"><span class="titleInfo">Підписок: </span><span>{{user.following}}</span></span><br>
+          <span class="profileInfo"><span class="titleInfo">Про себе: </span><span>{{user.blog == '' ? 'Пусто' : user.blog}}</span></span>
+          <button mat-stroked-button color="primary" class="actionFormButtons" (click)="editProfile()">Редагувати</button>
         </div>
-        <span *ngIf="followersArray.length == 0">В користувача ще немає підписників</span>
-      </div>
-    </mat-card-content>
-  </mat-card>
+        <div *ngIf="isEditing">
+          <form #editForm="ngForm" >
+            <input #jpegInput (click)="jpegInput.value=null" [hidden]="true" [(ngModel)]="avatar" name="avatarN" type="file" accept=".jpeg"/>
+            <button mat-stroked-button style="margin: 0 0 1em 1em" color="primary" (click)="jpegInput.click()">Виберіть нову фотографію</button><br>
+            <mat-form-field appearance="outline" style="width: 20em" >
+              <mat-label>Ім'я користувача</mat-label>
+              <input type="text"  matInput
+                     [(ngModel)]="editedUser.login" name="login" placeholder="Ім'я користувача"/>
+            </mat-form-field><br>
+            <mat-form-field appearance="outline" style="width: 20em" >
+              <mat-label>Локація</mat-label>
+              <input type="text"  matInput
+                     [(ngModel)]="editedUser.location" name="location" placeholder="Локація"/>
+            </mat-form-field><br>
+            <mat-form-field appearance="outline" style="width: 20em" >
+              <mat-label>Про себе</mat-label>
+              <input type="text"  matInput
+                     [(ngModel)]="editedUser.blog" name="blog" placeholder="Про себе"/>
+            </mat-form-field><br>
+            <button mat-flat-button color="primary" class="actionFormButtons" (click)="saveEditedUser()">Зберегти</button>
+            <button mat-flat-button color="warn" class="actionFormButtons" (click)="cancelSavingUser()">Відмінити</button>
+          </form>
+        </div>
+      </mat-card-content>
+    </mat-card>
 
-  <mat-card class="card">
+    <mat-card class="card">
+      <mat-card-header>
+        <mat-card-title>5 перших підписників</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div style="display: flex; justify-content: space-between;">
+          <div *ngFor="let follower of followersArray"
+               style=" display: flex; flex-direction: column; justify-content: center; margin: 0.5em;">
+            <img [src]="follower.avatar_url" alt="follower" mat-card-avatar class="followerImage">
+            <p>{{follower.login}}</p>
+          </div>
+          <span *ngIf="followersArray.length == 0">В користувача ще немає підписників</span>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-card class="card cardRepo">
     <mat-card-header>
       <mat-card-title>5 перших репозиторіїв</mat-card-title>
     </mat-card-header>
@@ -72,7 +68,12 @@
         <span class="profileInfo"><span class="titleInfo">Назва: </span><span>{{repo.name}}</span></span><br>
         <span class="profileInfo"><span class="titleInfo">Основна мова: </span><span>{{repo.language}}</span></span><br>
         <span class="profileInfo"><span class="titleInfo">Опис: </span>
-          <span>{{repo.description}}</span>
+          <span>{{repo.viewDescription}}</span>
+          <button mat-button *ngIf="repo.viewDescription.length>30 && repo.viewDescription.length != 0"
+                  (click)="repo.viewDescription = repo.description.slice(0, 27)"><mat-icon>keyboard_arrow_left</mat-icon></button>
+          <button mat-button
+                  *ngIf="repo.viewDescription.length<=27 && repo.viewDescription.length != 0 && repo.description.length > 27"
+                  (click)="repo.viewDescription = repo.description"><mat-icon>keyboard_arrow_right</mat-icon></button>
         </span><br>
         <mat-divider></mat-divider>
       </div>
@@ -80,4 +81,4 @@
     </mat-card-content>
   </mat-card>
 </div>
-<mat-spinner *ngIf="!isLoad"></mat-spinner>
+<mat-spinner class="spinner" *ngIf="!isLoad"></mat-spinner>

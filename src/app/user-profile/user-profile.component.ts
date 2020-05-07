@@ -1,17 +1,18 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {HttpService} from "../share/services/http.service";
 import {Router} from "@angular/router";
-import {DataExchangeService} from "../share/services/data-exchange.service";
 import {UserModel} from "../share/models/User.model";
 import {ReposModel} from "../share/models/Repos.model";
 import {FollowerModel} from "../share/models/Follower.model";
+import {Subscription} from "rxjs";
+import {DataExchangeService} from "../share/services/data-exchange.service";
 
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss']
 })
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent implements OnInit, OnDestroy {
 
   constructor(private httpService: HttpService, private router: Router,
               private dataExchangeService: DataExchangeService) { }
@@ -23,25 +24,32 @@ export class UserProfileComponent implements OnInit {
   userName: string;
   isLoad: boolean;
   isEditing: boolean;
+  avatar: any;
+
+  getUserSubscriptions: Subscription = new Subscription();
+  getFollowersSubscriptions: Subscription = new Subscription();
+  getReposSubscriptions: Subscription = new Subscription();
+
+  static warningMassage(value) {
+    return confirm(value);
+  }
+
 
   ngOnInit(): void {
     this.isLoad = false;
     this.followersArray = new Array<any>();
     this.reposArray = new Array<ReposModel>();
-    //this.userName = this.dataExchangeService.UserName.getValue();
-    this.userName = 'YevhenDemchenko';
+    this.userName = this.dataExchangeService.UserName.getValue();
+    //this.userName = 'YevhenDemchenko';
     if (this.userName.length === 0) {
       this.router.navigate(["users"]);
     } else {
       this.loadUser();
     }
-
-
   }
 
-
   loadUser() {
-    this.httpService.getUser(this.userName).subscribe({
+    this.getUserSubscriptions = this.httpService.getUser(this.userName).subscribe({
       next: (response: any) => {
         this.user = response;
         console.log(response);
@@ -59,7 +67,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   loadFollowers() {
-    this.httpService.getFollowers(this.user.followers_url).subscribe({
+    this.getFollowersSubscriptions =this.httpService.getFollowers(this.user.followers_url).subscribe({
       next: (response: FollowerModel[]) => {
         response.length >=5 ? response.splice(4, response.length - 5) : response;
         for (const e of response) {
@@ -74,14 +82,13 @@ export class UserProfileComponent implements OnInit {
   }
 
   loadRepos() {
-    this.httpService.getRepos(this.user.repos_url).subscribe({
+    this.getReposSubscriptions = this.httpService.getRepos(this.user.repos_url).subscribe({
       next: (response: ReposModel[]) => {
         response.length >=5 ? response.splice(4, response.length - 5) : response;
         for (const e of response) {
-          this.reposArray.push(new ReposModel({name: e.name, description: e.description, language: e.language}));
+          this.reposArray.push(new ReposModel({name: e.name, description: e.description, language: e.language,
+          viewDescription: !!e.description && e.description.length > 30 ? e.description.slice(0, 27) : e.description}));
         }
-
-        console.log(response);
       },
       error: error => {
         console.error('There was an error!', error);
@@ -100,11 +107,23 @@ export class UserProfileComponent implements OnInit {
   }
 
   saveEditedUser() {
-
+    const warn = UserProfileComponent.warningMassage('Ви впевнені, що хочете зберегти зміни?');
+    if(warn) {
+      this.isEditing = !this.isEditing;
+    }
   }
 
   cancelSavingUser() {
+    const warn = UserProfileComponent.warningMassage('Ви впевнені, що хочете відмінити редагування?');
+    if(warn) {
+      this.isEditing = !this.isEditing;
+    }
+  }
 
+  ngOnDestroy(): void {
+    this.getUserSubscriptions.unsubscribe();
+    this.getFollowersSubscriptions.unsubscribe();
+    this.getReposSubscriptions.unsubscribe();
   }
 
 }

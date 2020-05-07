@@ -1,8 +1,7 @@
-<form #editForm="ngForm" >
-  <mat-form-field appearance="outline" style="width: 15em" >
+<form #editForm="ngForm" style="display: -webkit-box;" >
+  <mat-form-field appearance="outline">
     <mat-label>Введіть логін користувача</mat-label>
-    <input type="text"  matInput
-           [(ngModel)]="userName" name="name" placeholder="Введіть логін користувача"/>
+    <input type="text" matInput [(ngModel)]="userName" name="name" placeholder="Введіть логін користувача"/>
   </mat-form-field>&nbsp;&nbsp;
   <mat-form-field class="form" floatLabel="never" appearance="outline">
     <mat-label>Локація</mat-label>
@@ -12,8 +11,11 @@
     <mat-label>Мова програмування</mat-label>
     <input type="text" placeholder="Мова програмування" matInput name="language" [(ngModel)]="languageInput">
   </mat-form-field>&nbsp;&nbsp;
-  <button mat-stroked-button color="primary" [disabled]="!editForm.valid" (click)="findUsers()">Знайти</button>
-
+  <button mat-stroked-button color="primary"
+          [disabled]="userName.trim().length == 0 && locationInput.trim().length == 0 && languageInput.trim().length == 0"
+          (click)="findUsers(1)">Знайти</button>
+  <mat-paginator *ngIf="isFound" style="width: 34em;" [pageSize]="20" [length]="lengthPagination" (page)="pageEvent = $event; findUsers(pageEvent.pageIndex + 1)">
+  </mat-paginator>
 </form>
 <div *ngIf="isFound" class="cardDiv">
   <mat-card *ngFor="let user of usersInfoArray" class="card" (click)="showUserProfile(user.login)">
@@ -27,3 +29,5 @@
     </mat-card-actions>
   </mat-card>
 </div>
+<h1>{{noResults}}</h1>
+<mat-spinner class="spinner" *ngIf="isSearching"></mat-spinner>

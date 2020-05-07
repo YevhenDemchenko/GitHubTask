@@ -4,6 +4,7 @@ export class ReposModel {
       this.name = props.name || '';
       this.language = props.language || '';
       this.description = props.description || '';
+      this.viewDescription = props.viewDescription || '';
     } else {
       props.default();
     }
@@ -12,10 +13,11 @@ export class ReposModel {
   name: string;
   language: string;
   description: string;
+  viewDescription: string;
 
   default() {
     this.name = '';
     this.language = '';
-    this.description = '';
+    this.viewDescription = '';
   }
 }

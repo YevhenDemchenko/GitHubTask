@@ -4,6 +4,7 @@ import {UserModel} from "../share/models/User.model";
 import {Router} from "@angular/router";
 import {DataExchangeService} from "../share/services/data-exchange.service";
 import {forkJoin, Subscription} from "rxjs";
+import {PageEvent} from "@angular/material/paginator";
 
 @Component({
   selector: 'app-users',
@@ -16,7 +17,13 @@ export class UsersComponent implements OnInit, OnDestroy {
               private dataExchangeService: DataExchangeService) { }
 
   userName = '';
+  noResults = '';
   isFound: boolean;
+  isSearching: boolean;
+  lengthPagination: number;
+
+  pageEvent: PageEvent;
+
   usersArray: Array<UserModel>;
   usersInfoArray: Array<UserModel> = new Array<UserModel>();
 
@@ -36,43 +43,52 @@ export class UsersComponent implements OnInit, OnDestroy {
     }
   }
 
-  findUsers() {
+  findUsers(page:number) {
+    this.isSearching = true;
+    this.noResults = '';
     sessionStorage.setItem('searchProps', JSON.stringify({login: this.userName,
       location: this.locationInput, language: this.languageInput}));
 
     this.usersArray = new Array<UserModel>();
     this.usersInfoArray = new Array<UserModel>();
 
-    this.getUsersSubscriptions = this.httpService.getUsers(this.userName, this.locationInput, this.languageInput)
+    this.getUsersSubscriptions = this.httpService.getUsers(this.userName, this.locationInput, this.languageInput, page)
       .subscribe({
-      next: (response: any) => {
-        this.usersArray = response.items;
-        console.log(response);
-      },
-      error: error => {
-        console.error('There was an error!', error);
-      },
-      complete: () => {
-        let observeArr = [];
+        next: (response: any) => {
+          this.usersArray = response.items;
+          this.lengthPagination = response.total_count;
+          console.log(response);
+        },
+        error: error => {
+          console.error('There was an error!', error);
+        },
+        complete: () => {
+          let observeArr = [];
 
-        this.usersArray.forEach((e) => {
-          observeArr.push(this.getUserInfo(e.login))
-        });
+          this.usersArray.forEach((e) => {
+            observeArr.push(this.getUserInfo(e.login))
+          });
 
-        this.getUsersInfoSubscriptions = forkJoin(observeArr).subscribe({
-          next: (response: any) => {
-            console.log(response);
-            this.usersInfoArray = response;
-          },
-          error: error => {
-            console.error('There was an error!', error);
-          },
-          complete: () => {
-            this.isFound = true;
-          }
-        });
-      }
-    });
+          this.getUsersInfoSubscriptions = forkJoin(observeArr).subscribe({
+            next: (response: any) => {
+              console.log(response);
+              this.usersInfoArray = response;
+            },
+            error: error => {
+              console.error('There was an error!', error);
+            },
+            complete: () => {
+              if(this.usersInfoArray.length === 0) {
+                this.noResults = 'Нічого не знайдено!';
+              } else {
+                this.isFound = true;
+                this.noResults = '';
+              }
+              this.isSearching = false;
+            }
+          });
+        }
+      });
   }
 
   getUserInfo(username:string) {

@@ -1,12 +1,21 @@
 .cardDiv {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   flex-wrap: wrap;
 }
 .card {
-  max-width: 300px;
+  max-width: 235px;
   margin: 0.5em;
   min-width: 17em;
   min-height: 7em;
 }
-
+mat-form-field {
+  width: 12em;
+}
+.spinner {
+  position: absolute;
+  top: calc(50% - 50px);
+  left: calc(50% - 50px);
+  margin-right: -50%;
+  transform: translate(-50%, -50%)
+}

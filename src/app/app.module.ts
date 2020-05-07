@@ -21,6 +21,7 @@ import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatCardModule} from "@angular/material/card";
 import {HttpClientModule} from "@angular/common/http";
 import {MatButtonModule} from "@angular/material/button";
+import {MatDialogModule} from "@angular/material/dialog";
 
 export const rout: Routes = [
   {path: '', redirectTo: 'users', pathMatch: 'full'},
@@ -54,7 +55,8 @@ export const rout: Routes = [
     MatAutocompleteModule,
     ReactiveFormsModule,
     MatProgressSpinnerModule,
-    MatSelectModule
+    MatSelectModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]
