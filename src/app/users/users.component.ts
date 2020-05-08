@@ -2,7 +2,6 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {HttpService} from "../share/services/http.service";
 import {UserModel} from "../share/models/User.model";
 import {Router} from "@angular/router";
-import {DataExchangeService} from "../share/services/data-exchange.service";
 import {forkJoin, Subscription} from "rxjs";
 import {PageEvent} from "@angular/material/paginator";
 
@@ -13,22 +12,21 @@ import {PageEvent} from "@angular/material/paginator";
 })
 export class UsersComponent implements OnInit, OnDestroy {
 
-  constructor(private httpService: HttpService, private router: Router,
-              private dataExchangeService: DataExchangeService) { }
+  constructor(private httpService: HttpService, private router: Router) { }
 
   userName = '';
   noResults = '';
+  locationInput = '';
+  languageInput = '';
   isFound: boolean;
   isSearching: boolean;
   lengthPagination: number;
+  selectedPage: number;
 
   pageEvent: PageEvent;
 
   usersArray: Array<UserModel>;
   usersInfoArray: Array<UserModel> = new Array<UserModel>();
-
-  locationInput = '';
-  languageInput = '';
 
   getUsersSubscriptions: Subscription = new Subscription();
   getUsersInfoSubscriptions: Subscription = new Subscription();
@@ -36,10 +34,13 @@ export class UsersComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.isFound = false;
     let localProps = JSON.parse(sessionStorage.getItem('searchProps'));
+
     if (localProps != undefined && localProps.length != 0) {
       this.userName = localProps.login;
       this.locationInput = localProps.location;
       this.languageInput = localProps.language;
+      this.selectedPage = localProps.page;
+      this.findUsers(this.selectedPage);
     }
   }
 
@@ -48,7 +49,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.noResults = '';
 
     sessionStorage.setItem('searchProps', JSON.stringify({login: this.userName,
-      location: this.locationInput, language: this.languageInput}));
+      location: this.locationInput, language: this.languageInput, page: page}));
 
     this.usersArray = new Array<UserModel>();
     this.usersInfoArray = new Array<UserModel>();
@@ -95,7 +96,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   }
 
   showUserProfile(user: string) {
-    this.dataExchangeService.UserName.next(user);
+    sessionStorage.setItem('showProfile', JSON.stringify(user));
     this.router.navigate(['userProfile']);
   }
 
@@ -103,5 +104,4 @@ export class UsersComponent implements OnInit, OnDestroy {
     this.getUsersSubscriptions.unsubscribe();
     this.getUsersInfoSubscriptions.unsubscribe();
   }
-
 }

@@ -5,7 +5,6 @@ import {UserModel} from "../share/models/User.model";
 import {ReposModel} from "../share/models/Repos.model";
 import {FollowerModel} from "../share/models/Follower.model";
 import {Subscription} from "rxjs";
-import {DataExchangeService} from "../share/services/data-exchange.service";
 
 @Component({
   selector: 'app-user-profile',
@@ -14,8 +13,7 @@ import {DataExchangeService} from "../share/services/data-exchange.service";
 })
 export class UserProfileComponent implements OnInit, OnDestroy {
 
-  constructor(private httpService: HttpService, private router: Router,
-              private dataExchangeService: DataExchangeService) { }
+  constructor(private httpService: HttpService, private router: Router) { }
 
   user: UserModel;
   editedUser: UserModel;
@@ -40,7 +38,10 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.isLoad = false;
     this.followersArray = new Array<any>();
     this.reposArray = new Array<ReposModel>();
-    this.userName = this.dataExchangeService.UserName.getValue();
+
+    this.userName = !sessionStorage.getItem('showProfile') ?
+      '' : JSON.parse(sessionStorage.getItem('showProfile'));
+
     if (this.userName.length === 0) {
       this.router.navigate(["users"]);
     } else {
@@ -71,7 +72,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         response.length >=5 ? response.splice(4, response.length - 5) : response;
 
         for (const e of response) {
-          this.followersArray.push(new FollowerModel({login: e.login, avatar_url: e.avatar_url}));
+          this.followersArray.push(
+            new FollowerModel({login: e.login, avatar_url: e.avatar_url, html_url: e.html_url}));
         }
       },
       error: error => {
@@ -84,6 +86,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.getReposSubscriptions = this.httpService.getRepos(this.user.repos_url).subscribe({
       next: (response: ReposModel[]) => {
         response.length >=5 ? response.splice(4, response.length - 5) : response;
+
         for (const e of response) {
           this.reposArray.push(new ReposModel({name: e.name, description: e.description, language: e.language,
           viewDescription: !!e.description && e.description.length > 30 ? e.description.slice(0, 27) : e.description}));
@@ -96,6 +99,7 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   }
 
   goToSearchPage() {
+    sessionStorage.removeItem('showProfile');
     this.router.navigate(['users']);
   }
 
@@ -126,7 +130,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     } else {
       this.isEditing = !this.isEditing;
     }
-
   }
 
   ngOnDestroy(): void {
@@ -134,5 +137,4 @@ export class UserProfileComponent implements OnInit, OnDestroy {
     this.getFollowersSubscriptions.unsubscribe();
     this.getReposSubscriptions.unsubscribe();
   }
-
 }

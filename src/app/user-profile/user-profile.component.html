@@ -10,18 +10,35 @@
       </mat-card-header>
       <mat-card-content>
         <div *ngIf="!isEditing">
-          <span class="profileInfo"><span class="titleInfo">Локація: </span><span>{{user.location == null ? 'Невідомо' : user.location}}</span></span><br>
-          <span class="profileInfo"><span class="titleInfo">Репозиторіїв: </span><span>{{user.public_repos}}</span></span><br>
-          <span class="profileInfo"><span class="titleInfo">Підписників: </span><span>{{user.followers}}</span></span><br>
-          <span class="profileInfo"><span class="titleInfo">Підписок: </span><span>{{user.following}}</span></span><br>
-          <span class="profileInfo"><span class="titleInfo">Про себе: </span><span class="aboutSpan">{{user.blog == '' ? 'Пусто' : user.blog}}</span></span>
+          <span class="profileInfo">
+            <span class="titleInfo">Локація: </span>
+            <span>{{user.location == null ? 'Невідомо' : user.location}}</span>
+          </span><br>
+          <span class="profileInfo">
+            <span class="titleInfo">Репозиторіїв: </span>
+            <span>{{user.public_repos}}</span>
+          </span><br>
+          <span class="profileInfo">
+            <span class="titleInfo">Підписників: </span>
+            <span>{{user.followers}}</span>
+          </span><br>
+          <span class="profileInfo">
+            <span class="titleInfo">Підписок: </span>
+            <span>{{user.following}}</span>
+          </span><br>
+          <span class="profileInfo">
+            <span class="titleInfo">Про себе: </span>
+            <span class="aboutSpan">{{user.blog == '' ? 'Пусто' : user.blog}}</span>
+          </span>
           <button mat-stroked-button color="primary" class="actionFormButtons" (click)="editProfile()">Редагувати</button>
         </div>
 
         <div *ngIf="isEditing">
           <form #editForm="ngForm" >
-            <input #jpegInput (click)="jpegInput.value=null" [hidden]="true" [(ngModel)]="avatar" name="avatarN" type="file" accept=".jpeg"/>
-            <button mat-stroked-button style="margin: 0 0 1em 1em" color="primary" (click)="jpegInput.click()">Виберіть нову фотографію</button><br>
+            <input #jpegInput (click)="jpegInput.value=null" [hidden]="true"
+                   [(ngModel)]="avatar" name="avatarN" type="file" accept=".jpeg"/>
+            <button mat-stroked-button style="margin: 0 0 1em 1em" color="primary"
+                    (click)="jpegInput.click()">Виберіть нову фотографію</button><br>
             <mat-form-field appearance="outline" class="formField">
               <mat-label>Ім'я користувача</mat-label>
               <input type="text"  matInput
@@ -52,7 +69,9 @@
         <div class="divFollowers">
           <div *ngFor="let follower of followersArray"
                style=" display: flex; flex-direction: column; justify-content: center; margin: 0.5em;">
-            <img [src]="follower.avatar_url" alt="follower" mat-card-avatar class="followerImage">
+            <a [href]="follower.html_url">
+              <img [src]="follower.avatar_url" alt="follower" mat-card-avatar class="followerImage">
+            </a>
             <p>{{follower.login}}</p>
           </div>
           <span *ngIf="followersArray.length == 0">В користувача ще немає підписників</span>
@@ -72,10 +91,14 @@
         <span class="profileInfo"><span class="titleInfo">Опис: </span>
           <span>{{repo.viewDescription}}</span>
           <button mat-button *ngIf="repo.viewDescription.length>30 && repo.viewDescription.length != 0"
-                  (click)="repo.viewDescription = repo.description.slice(0, 27)"><mat-icon>keyboard_arrow_left</mat-icon></button>
+                  (click)="repo.viewDescription = repo.description.slice(0, 27)">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+          </button>
           <button mat-button
                   *ngIf="repo.viewDescription.length<=27 && repo.viewDescription.length != 0 && repo.description.length > 27"
-                  (click)="repo.viewDescription = repo.description"><mat-icon>keyboard_arrow_right</mat-icon></button>
+                  (click)="repo.viewDescription = repo.description">
+            <mat-icon>keyboard_arrow_right</mat-icon>
+          </button>
         </span><br>
         <mat-divider></mat-divider>
       </div>
