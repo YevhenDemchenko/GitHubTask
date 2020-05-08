@@ -14,11 +14,11 @@
 
   <button mat-raised-button color="primary"
           [disabled]="userName.trim().length == 0 && locationInput.trim().length == 0 &&
-           languageInput.trim().length == 0" (click)="findUsers(1)">Знайти</button>
+           languageInput.trim().length == 0" (click)="findUsers(1); selectedPage = 0;">Знайти</button>
 
   <mat-paginator *ngIf="isFound && lengthPagination !== 0" style="width: 28em;"
                  [pageSize]="20" [length]="lengthPagination"
-                 [pageIndex]="selectedPage - 1"
+                 [pageIndex]="selectedPage"
                  (page)="pageEvent = $event; selectedPage = pageEvent.pageIndex;
                   findUsers(pageEvent.pageIndex + 1)">
   </mat-paginator>

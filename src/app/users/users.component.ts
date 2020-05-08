@@ -39,8 +39,8 @@ export class UsersComponent implements OnInit, OnDestroy {
       this.userName = localProps.login;
       this.locationInput = localProps.location;
       this.languageInput = localProps.language;
-      this.selectedPage = localProps.page;
-      this.findUsers(this.selectedPage);
+      this.selectedPage = localProps.page - 1;
+      this.findUsers(this.selectedPage + 1);
     }
   }
 
