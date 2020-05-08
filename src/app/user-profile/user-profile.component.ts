@@ -55,7 +55,8 @@ export class UserProfileComponent implements OnInit, OnDestroy {
         this.user = new UserModel({login: response.login, location: response.location,
           blog: response.blog, avatar_url: response.avatar_url, followers_url: response.followers_url,
           repos_url: response.repos_url, public_repos: response.public_repos, followers: response.followers,
-          following: response.following, name: response.name, created_at: response.created_at});
+          following: response.following, name: response.name, created_at: response.created_at,
+          html_url: response.html_url});
       },
       error: error => {
         console.error('There was an error!', error);

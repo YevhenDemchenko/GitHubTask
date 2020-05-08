@@ -6,6 +6,7 @@
       <mat-card-header>
         <img mat-card-avatar [src]="user.avatar_url" alt="avatar" class="avatar">
         <mat-card-title>{{user.login}}</mat-card-title>
+        <a [href]="user.html_url"><mat-icon>link</mat-icon></a>
         <mat-card-subtitle>{{user.name}}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
@@ -104,7 +105,7 @@
             <mat-icon>keyboard_arrow_right</mat-icon>
           </button>
         </span><br>
-        <mat-divider></mat-divider>
+        <mat-divider *ngIf="reposArray.indexOf(repo) != 4"></mat-divider>
       </div>
       <span *ngIf="reposArray.length == 0">В користувача ще немає репозиторіїв</span>
     </mat-card-content>

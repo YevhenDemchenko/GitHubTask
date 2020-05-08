@@ -9,6 +9,7 @@ export class UserModel {
       this.avatar_url = props.avatar_url || '';
       this.followers_url = props.followers_url || '';
       this.repos_url = props.repos_url || '';
+      this.html_url = props.html_url || '';
       this.public_repos = props.public_repos || 0;
       this.followers = props.followers || 0;
       this.following = props.following || 0;
@@ -27,6 +28,7 @@ export class UserModel {
   login: string;
   repos_url: string;
   name: string;
+  html_url: string;
 
   default() {
     this.location = '';
@@ -37,6 +39,7 @@ export class UserModel {
     this.avatar_url = '';
     this.followers_url = '';
     this.repos_url = '';
+    this.html_url = '';
     this.public_repos = 0;
     this.followers = 0;
     this.following = 0;
