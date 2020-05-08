@@ -4,15 +4,19 @@
   <div class="firstBlock">
     <mat-card class="card">
       <mat-card-header>
-        <img mat-card-avatar [src]="user.avatar_url" alt="avatar" style="background-size: cover;">
+        <img mat-card-avatar [src]="user.avatar_url" alt="avatar" class="avatar">
         <mat-card-title>{{user.login}}</mat-card-title>
-        <mat-card-subtitle>{{user.created_at | date: 'dd.MM.yyyy': 'Europe/Kiev'}}</mat-card-subtitle>
+        <mat-card-subtitle>{{user.name}}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
         <div *ngIf="!isEditing">
           <span class="profileInfo">
             <span class="titleInfo">Локація: </span>
-            <span>{{user.location == null ? 'Невідомо' : user.location}}</span>
+            <span>{{user.location == '' ? 'Невідомо' : user.location}}</span>
+          </span><br>
+          <span class="profileInfo">
+            <span class="titleInfo">Аккаунт створено: </span>
+            <span>{{user.created_at | date: 'dd.MM.yyyy': 'Europe/Kiev'}}</span>
           </span><br>
           <span class="profileInfo">
             <span class="titleInfo">Репозиторіїв: </span>
@@ -69,7 +73,7 @@
         <div class="divFollowers">
           <div *ngFor="let follower of followersArray"
                style=" display: flex; flex-direction: column; justify-content: center; margin: 0.5em;">
-            <a [href]="follower.html_url">
+            <a [href]="follower.html_url" class="link">
               <img [src]="follower.avatar_url" alt="follower" mat-card-avatar class="followerImage">
             </a>
             <p>{{follower.login}}</p>

@@ -3,29 +3,48 @@
   flex-wrap: wrap;
   justify-content: center;
 }
+
 .firstBlock {
   display: block;
 }
+.avatar {
+  background-size: cover;
+  transition: 1s;
+}
+.avatar:hover {
+  transform: scale(1.8);
+}
+
 .card {
   max-width: 700px;
   margin: 0.5em;
   min-height: 7em;
 }
+
 .profileInfo {
   font-size: 1em;
   display: inline-block;
   width: 100%;
   padding-left: 1em;
+  margin: 0.3em 0 0.3em 0;
 }
+
 .titleInfo {
   display: inline-block;
-  width: 8em!important;
+  width: 9em!important;
 }
+
 .followerImage {
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 10px;
+  transition: 1s;
 }
+
+.followerImage:hover {
+  transform: scale(1.6);
+}
+
 .divFollowers {
   display: flex;
   justify-content: space-between;
@@ -34,15 +53,19 @@
 .cardRepo {
   width: 48%;
 }
+
 .actionFormButtons {
   margin: 1em;
 }
+
 mat-form-field {
   margin-left: 1em;
 }
+
 .formField {
   width: 20em;
 }
+
 .spinner {
   position: absolute;
   top: calc(50% - 50px);
@@ -50,9 +73,14 @@ mat-form-field {
   margin-right: -50%;
   transform: translate(-50%, -50%)
 }
+
 .aboutSpan {
   display: table-caption;
   width: 18em;
+}
+
+.link {
+  text-align: center;
 }
 
 @media screen and (max-width: 600px) {

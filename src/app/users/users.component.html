@@ -12,9 +12,9 @@
     <input type="text" placeholder="Мова програмування" matInput name="language" [(ngModel)]="languageInput">
   </mat-form-field>&nbsp;&nbsp;
 
-  <button mat-stroked-button color="primary"
-          [disabled]="userName.trim().length == 0 && locationInput.trim().length == 0 && languageInput.trim().length == 0"
-          (click)="findUsers(1)">Знайти</button>
+  <button mat-raised-button color="primary"
+          [disabled]="userName.trim().length == 0 && locationInput.trim().length == 0 &&
+           languageInput.trim().length == 0" (click)="findUsers(1)">Знайти</button>
 
   <mat-paginator *ngIf="isFound && lengthPagination !== 0" style="width: 28em;"
                  [pageSize]="20" [length]="lengthPagination"
@@ -26,12 +26,13 @@
 <div *ngIf="isFound" class="cardDiv">
   <mat-card *ngFor="let user of usersInfoArray" class="card" (click)="showUserProfile(user.login)">
     <mat-card-header>
-      <img mat-card-avatar [src]="user.avatar_url" alt="avatar" style="background-size: cover;">
-      <mat-card-title style="margin-bottom: 0!important">{{user.login}}</mat-card-title>
+      <img mat-card-avatar [src]="user.avatar_url" alt="avatar" class="avatarInCard">
+      <mat-card-title>{{user.login}}</mat-card-title>
+      <mat-card-subtitle style="margin-bottom: 0!important">{{user.name}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-actions>
       <span style="margin-left: 1em;">Локація: {{user.location == null ? 'Невідомо' : user.location}}</span><br>
-      <span style="margin-left: 1em;">Публічних репозиторіїв: {{user.public_repos}}</span>
+      <span style="margin-left: 1em;">Публічних репозиторіїв: <span style="font: normal 700 16px serif;">{{user.public_repos}}</span></span>
     </mat-card-actions>
   </mat-card>
 </div>

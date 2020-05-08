@@ -52,7 +52,10 @@ export class UserProfileComponent implements OnInit, OnDestroy {
   loadUser() {
     this.getUserSubscriptions = this.httpService.getUser(this.userName).subscribe({
       next: (response: any) => {
-        this.user = response;
+        this.user = new UserModel({login: response.login, location: response.location,
+          blog: response.blog, avatar_url: response.avatar_url, followers_url: response.followers_url,
+          repos_url: response.repos_url, public_repos: response.public_repos, followers: response.followers,
+          following: response.following, name: response.name, created_at: response.created_at});
       },
       error: error => {
         console.error('There was an error!', error);
