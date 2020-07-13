@@ -14,7 +14,7 @@ export class UserModel {
       this.followers = props.followers || 0;
       this.following = props.following || 0;
     } else {
-      props.default();
+      this.default();
     }
   }
   created_at: string;
