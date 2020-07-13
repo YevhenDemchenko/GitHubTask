@@ -6,7 +6,7 @@ export class ReposModel {
       this.description = props.description || '';
       this.viewDescription = props.viewDescription || '';
     } else {
-      props.default();
+      this.default();
     }
   }
 
