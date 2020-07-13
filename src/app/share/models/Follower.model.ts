@@ -5,7 +5,7 @@ export class FollowerModel {
       this.avatar_url = props.avatar_url || '';
       this.html_url = props.html_url || '';
     } else {
-      props.default();
+      this.default();
     }
   }
 
